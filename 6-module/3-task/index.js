@@ -37,6 +37,7 @@ export default class Carousel {
         </div>
       </div>
     `;
+    
     let carouselRoot = createElement(`
       <div class="container">
         <div class="carousel">
@@ -49,59 +50,89 @@ export default class Carousel {
     `);
     
     this.elem = carouselRoot;
-    const width = carouselCard.offsetWidth;
-  
-    let slideImage = () => {
-      const rightArrow = document.querySelector('.carousel__arrow_right');
-      const leftArrow = document.querySelector('.carousel__arrow_left');
-      
-      let counter = 0;
-          
-      leftArrow.style.display = 'none';
-      rightArrow.style.display = '';
-      
-      rightArrow.addEventListener('click', () => {
-        counter++;
-        carouselCard.style.transform = `translateX(${-counter * width}px)`;
-        if (counter === slidesLength) {
-          rightArrow.style.display = 'none';
-          leftArrow.style.display = '';
-        } else {
-          rightArrow.style.display = '';
-          leftArrow.style.display = '';
-          
-        }
-      });
-      
-      leftArrow.addEventListener('click', () => {
-        counter--;
-        carouselCard.style.transform = `translateX(${-counter * width}px)`;
-        if (counter === 0) {
-          leftArrow.style.display = 'none';
-          rightArrow.style.display = '';
-        } else {
-          leftArrow.style.display = '';
-          rightArrow.style.display = '';
-        }
-      })
-      
-      return;
-    }
-    slideImage();
-  
-    let addToCart = () => {
-      let plusButton = document.querySelector('.carousel__button');
-      
-      plusButton.addEventListener('click', () => {
-        new CustomEvent("product-add", {
-          detail: this.id,
-          bubbles: true
-        });
-        
-      });
-      return;
-    }
-    addToCart();
-  
+    let carousel = carouselRoot.querySelector('.carousel__inner');
+    const width = carousel.offsetWidth;
+    console.log(width); // почему ноль?
   }
+  
+  slideImage() {
+    const rightArrow = carouselRoot.querySelector('.carousel__arrow_right');
+    const leftArrow = carouselRoot.querySelector('.carousel__arrow_left');
+    
+    let counter = 0;
+        
+    leftArrow.style.display = 'none';
+    rightArrow.style.display = '';
+    
+    rightArrow.addEventListener('click', () => {
+      counter++;
+      carouselCard.style.transform = `translateX(${-counter * width}px)`;
+      if (counter === slidesLength) {
+        rightArrow.style.display = 'none';
+        leftArrow.style.display = '';
+      } else {
+        rightArrow.style.display = '';
+        leftArrow.style.display = '';
+        
+      }
+    });
+    
+    leftArrow.addEventListener('click', () => {
+      counter--;
+      carouselCard.style.transform = `translateX(${-counter * width}px)`;
+      if (counter === 0) {
+        leftArrow.style.display = 'none';
+        rightArrow.style.display = '';
+      } else {
+        leftArrow.style.display = '';
+        rightArrow.style.display = '';
+      }
+    })
+    
+    return;
+  }
+  
+
+  addToCart() {
+    let plusButton = carouselRoot.querySelector('.carousel__button');
+    
+    plusButton.addEventListener('click', () => {
+      new CustomEvent("product-add", {
+        detail: this.id,
+        bubbles: true
+      });
+      
+      
+    });
+    console.log('plus');
+    return;
+  }
+  
 }
+let test = new Carousel([
+  {
+    name: 'Penang shrimp',
+    price: 16,
+    image: 'penang_shrimp.png',
+    id: 'penang-shrimp'
+  },
+  {
+    name: 'Chicken cashew',
+    price: 14,
+    image: 'chicken_cashew.png',
+    id: 'chicken-cashew'
+  },
+  {
+    name: 'Red curry veggies',
+    price: 12.5,
+    image: 'red_curry_vega.png',
+    id: 'red-curry-veggies'
+  },
+  {
+    name: 'Chicken springrolls',
+    price: 6.5,
+    image: 'chicken_loempias.png',
+    id: 'chicken-springrolls'
+  }
+]);
+test.addToCart();
