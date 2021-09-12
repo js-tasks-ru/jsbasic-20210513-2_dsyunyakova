@@ -40,46 +40,49 @@ export default class Carousel {
     
     let carouselRoot = createElement(`
       <div class="container">
-        <div class="carousel">
-          ${carouselArrows}
-        </div>
-        <div class="carousel__inner">
-          ${carouselCard}
-        </div>
-      </div>
+          <div class="carousel">
+            ${carouselArrows}
+            <div class="carousel__inner">
+              ${carouselCard}
+            </div>
+          </div>
+      </div>  
     `);
     
     this.elem = carouselRoot;
-    let carousel = carouselRoot.querySelector('.carousel__inner');
-    const width = carousel.offsetWidth;
-    console.log(width); // почему ноль?
+    const leftArrow = this.elem.querySelector('.carousel__arrow_left');
+    leftArrow.style.display = 'none';
   }
   
   slideImage() {
-    const rightArrow = carouselRoot.querySelector('.carousel__arrow_right');
-    const leftArrow = carouselRoot.querySelector('.carousel__arrow_left');
-    
+    const rightArrow = this.elem.querySelector('.carousel__arrow_right');
+    const leftArrow = this.elem.querySelector('.carousel__arrow_left');
+    let carousel = this.elem.querySelector('.carousel__inner');
+    const image = this.elem.querySelector('.carousel__img');
+    const width = image.width; // так стало выводить правильную цифру
+        
     let counter = 0;
         
     leftArrow.style.display = 'none';
     rightArrow.style.display = '';
     
+    
     rightArrow.addEventListener('click', () => {
       counter++;
-      carouselCard.style.transform = `translateX(${-counter * width}px)`;
-      if (counter === slidesLength) {
+      this.elem.style.transform = `translateX(${-counter * width}px)`;
+      if (counter === this.slides.length) {
         rightArrow.style.display = 'none';
         leftArrow.style.display = '';
       } else {
         rightArrow.style.display = '';
         leftArrow.style.display = '';
-        
       }
+      console.log('did happen');
     });
     
     leftArrow.addEventListener('click', () => {
       counter--;
-      carouselCard.style.transform = `translateX(${-counter * width}px)`;
+      this.elem.style.transform = `translateX(${-counter * width}px)`;
       if (counter === 0) {
         leftArrow.style.display = 'none';
         rightArrow.style.display = '';
@@ -94,21 +97,25 @@ export default class Carousel {
   
 
   addToCart() {
-    let plusButton = carouselRoot.querySelector('.carousel__button');
+    let plusButton = this.elem.querySelector('.carousel__button');
     
     plusButton.addEventListener('click', () => {
+      console.log('plus');
       new CustomEvent("product-add", {
         detail: this.id,
         bubbles: true
       });
       
-      
+      console.log('plus');
     });
-    console.log('plus');
+    
     return;
   }
   
 }
+
+
+
 let test = new Carousel([
   {
     name: 'Penang shrimp',
@@ -136,3 +143,4 @@ let test = new Carousel([
   }
 ]);
 test.addToCart();
+test.slideImage();
